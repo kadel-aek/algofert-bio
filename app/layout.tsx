@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: "",
+    google: "PDkYozWAAyelgfXjba2kS8d8j05unuVF-XK1NU0RNNU",
   },
 };
 
