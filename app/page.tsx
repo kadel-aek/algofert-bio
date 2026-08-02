@@ -295,10 +295,10 @@ export default function Home() {
           <div className="mt-14 overflow-hidden rounded-3xl shadow-xl shadow-black/10">
             <Image
               src={assets.chercheuseCulture}
-              alt="Chercheuse au milieu de la culture expérimentale"
-              width={1200}
-              height={900}
-              className="h-[420px] w-full object-cover object-center"
+              alt="Champ expérimental d’orge à El-Guettar, Relizane — 36°04'10.3&quot;N 0°48'39.7&quot;E"
+              width={1536}
+              height={1024}
+              className="h-auto w-full object-contain"
             />
           </div>
         </div>
