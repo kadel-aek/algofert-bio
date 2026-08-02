@@ -11,7 +11,7 @@ const assets = {
   packaging: "/images/packaging/gamme-algofert-bio.png",
 
   chercheuseDebout: "/images/terrain/chercheuse-debout.jpeg",
-  chercheuseCulture: "/images/terrain/chercheuse-culture.jpeg",
+  chercheuseCulture: "/images/terrain/chercheuse-culture.jpg",
 
   rendementFr: "/images/essais/rendement-fr.jpg",
   plantesEntieres: "/images/essais/plantes-entieres.jpeg",
