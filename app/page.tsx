@@ -18,7 +18,7 @@ const assets = {
   comparaisonEpis: "/images/essais/comparaison-epis-recolte.jpeg",
   episVerts: "/images/essais/epis-verts.jpeg",
   consortiumsOrge: "/images/laboratoire/consortiums-orge.jpeg",
-  consortiumsTomates: "/images/laboratoire/consortiums-tomate.jpeg",
+  consortiumsTomate: "/images/laboratoire/consortiums-tomate.jpeg",
 
   heroVideo: "/videos/hero-farmer.mp4",
   rootVideo: "/videos/root-colonization.mp4",
@@ -425,7 +425,7 @@ export default function Home() {
 
             <div className="overflow-hidden rounded-3xl bg-[#eff3ec] p-4">
               <Image
-                src={assets.consortiumsTomates}
+                src={assets.consortiumsTomate}
                 alt="Essais en pots des consortiums bactériens sur tomate"
                 width={608}
                 height={1080}
