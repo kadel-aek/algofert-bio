@@ -17,7 +17,8 @@ const assets = {
   plantesEntieres: "/images/essais/plantes-entieres.jpeg",
   comparaisonEpis: "/images/essais/comparaison-epis-recolte.jpeg",
   episVerts: "/images/essais/epis-verts.jpeg",
-  flaconsBio: "/images/essais/flacons-bio.jpg",
+  consortiumsOrge: "/images/laboratoire/consortiums-orge.jpeg",
+  consortiumsTomates: "/images/laboratoire/consortiums-tomate.jpeg",
 
   heroVideo: "/videos/hero-farmer.mp4",
   rootVideo: "/videos/root-colonization.mp4",
@@ -411,14 +412,26 @@ export default function Home() {
       {/* Formulations expérimentales */}
       <section className="bg-white px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl bg-[#eff3ec] p-6">
-            <Image
-              src={assets.flaconsBio}
-              alt="Préparations expérimentales des consortiums"
-              width={900}
-              height={600}
-              className="h-auto w-full rounded-2xl"
-            />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-3xl bg-[#eff3ec] p-4">
+              <Image
+                src={assets.consortiumsOrge}
+                alt="Essais en pots des consortiums bactériens sur orge"
+                width={1080}
+                height={810}
+                className="h-[420px] w-full rounded-2xl object-contain object-center"
+              />
+            </div>
+
+            <div className="overflow-hidden rounded-3xl bg-[#eff3ec] p-4">
+              <Image
+                src={assets.consortiumsTomates}
+                alt="Essais en pots des consortiums bactériens sur tomate"
+                width={608}
+                height={1080}
+                className="h-[420px] w-full rounded-2xl object-contain object-center"
+              />
+            </div>
           </div>
 
           <div>
