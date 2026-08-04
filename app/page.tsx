@@ -719,7 +719,12 @@ export default function Home() {
 
         <div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
           <p>{t.page.footer.copyright}</p>
-
+          <p>
+              Site créé par{" "}
+              <span className="font-semibold text-white/55">
+              KEHLI A.
+              </span>
+          </p> 
           <p>{t.page.footer.incubator}</p>
         </div>
       </footer>
