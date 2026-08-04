@@ -2,12 +2,17 @@
 
 import { FormEvent, useState } from "react";
 
+import { useLanguage } from "@/components/LanguageProvider";
+
 type FormStatus = {
   type: "idle" | "loading" | "success" | "error";
   message: string;
 };
 
 export default function ContactForm() {
+  const { t, isRTL } = useLanguage();
+  const formText = t.page.contactForm;
+
   const [status, setStatus] = useState<FormStatus>({
     type: "idle",
     message: "",
@@ -29,7 +34,7 @@ export default function ContactForm() {
 
     setStatus({
       type: "loading",
-      message: "Envoi en cours...",
+      message: formText.loading,
     });
 
     try {
@@ -48,22 +53,19 @@ export default function ContactForm() {
       };
 
       if (!response.ok) {
-        throw new Error(data.error || "L’envoi du message a échoué.");
+        throw new Error(formText.error);
       }
 
       form.reset();
 
       setStatus({
         type: "success",
-        message: data.message || "Votre message a été envoyé avec succès.",
+        message: formText.success,
       });
-    } catch (error) {
+    } catch {
       setStatus({
         type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Une erreur est survenue pendant l’envoi.",
+        message: formText.unknownError,
       });
     }
   }
@@ -71,12 +73,15 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl bg-white p-7 shadow-xl shadow-[#17351f]/10 sm:p-10"
+      dir={isRTL ? "rtl" : "ltr"}
+      className={`rounded-3xl bg-white p-7 shadow-xl shadow-[#17351f]/10 sm:p-10 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-2 block text-sm font-bold">
-            Nom et prénom *
+            {formText.nameLabel}
           </label>
 
           <input
@@ -84,24 +89,21 @@ export default function ContactForm() {
             name="name"
             type="text"
             required
-            placeholder="Votre nom"
+            placeholder={formText.namePlaceholder}
             className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="organization"
-            className="mb-2 block text-sm font-bold"
-          >
-            Organisme
+          <label htmlFor="organization" className="mb-2 block text-sm font-bold">
+            {formText.organizationLabel}
           </label>
 
           <input
             id="organization"
             name="organization"
             type="text"
-            placeholder="Entreprise ou institution"
+            placeholder={formText.organizationPlaceholder}
             className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
           />
         </div>
@@ -109,22 +111,25 @@ export default function ContactForm() {
 
       <div className="mt-6">
         <label htmlFor="email" className="mb-2 block text-sm font-bold">
-          Adresse e-mail *
+          {formText.emailLabel}
         </label>
 
         <input
           id="email"
           name="email"
           type="email"
+          dir="ltr"
           required
-          placeholder="votre@email.com"
-          className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
+          placeholder={formText.emailPlaceholder}
+          className={`w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15 ${
+            isRTL ? "text-right" : "text-left"
+          }`}
         />
       </div>
 
       <div className="mt-6">
         <label htmlFor="subject" className="mb-2 block text-sm font-bold">
-          Objet *
+          {formText.subjectLabel}
         </label>
 
         <select
@@ -135,26 +140,32 @@ export default function ContactForm() {
           className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
         >
           <option value="" disabled>
-            Sélectionnez un sujet
+            {formText.subjectPlaceholder}
           </option>
           <option value="Partenariat scientifique">
-            Partenariat scientifique
+            {formText.subjects.scientific}
           </option>
-          <option value="Essai agricole">Essai agricole</option>
+          <option value="Essai agricole">
+            {formText.subjects.agricultural}
+          </option>
           <option value="Partenariat industriel">
-            Partenariat industriel
+            {formText.subjects.industrial}
           </option>
           <option value="Investissement et financement">
-            Investissement et financement
+            {formText.subjects.investment}
           </option>
-          <option value="Distribution">Distribution</option>
-          <option value="Autre demande">Autre demande</option>
+          <option value="Distribution">
+            {formText.subjects.distribution}
+          </option>
+          <option value="Autre demande">
+            {formText.subjects.other}
+          </option>
         </select>
       </div>
 
       <div className="mt-6">
         <label htmlFor="message" className="mb-2 block text-sm font-bold">
-          Message *
+          {formText.messageLabel}
         </label>
 
         <textarea
@@ -162,7 +173,7 @@ export default function ContactForm() {
           name="message"
           rows={6}
           required
-          placeholder="Présentez brièvement votre demande..."
+          placeholder={formText.messagePlaceholder}
           className="w-full resize-none rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
         />
       </div>
@@ -172,7 +183,7 @@ export default function ContactForm() {
         disabled={status.type === "loading"}
         className="mt-7 inline-flex w-full justify-center rounded-full bg-[#17351f] px-7 py-4 font-bold text-white transition hover:-translate-y-1 hover:bg-[#245331] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status.type === "loading" ? "Envoi en cours..." : "Envoyer la demande"}
+        {status.type === "loading" ? formText.loading : formText.submit}
       </button>
 
       {status.message && (

@@ -3,21 +3,28 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { useLanguage } from "@/components/LanguageProvider";
+import type { Language } from "@/lib/i18n";
+
 type NavbarProps = {
   logoSrc: string;
 };
 
 const navigation = [
-  { label: "Technologie", href: "#technologie" },
-  { label: "Essais au champ", href: "#terrain" },
-  { label: "Résultats", href: "#resultats" },
-  { label: "Produits", href: "#produits" },
-  { label: "Équipe", href: "#equipe" },
-];
+  { key: "technology", href: "#technologie" },
+  { key: "fieldTrials", href: "#terrain" },
+  { key: "results", href: "#resultats" },
+  { key: "products", href: "#produits" },
+  { key: "team", href: "#equipe" },
+] as const;
+
+const languages: Language[] = ["fr", "ar", "en"];
 
 export default function Navbar({ logoSrc }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { language, setLanguage, t, isRTL } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,9 +53,8 @@ export default function Navbar({ logoSrc }: NavbarProps) {
     >
       <nav
         aria-label="Navigation principale"
-        className="mx-auto flex min-h-[94px] w-full max-w-[1500px] items-center justify-between gap-6 px-6 lg:px-10"
+        className="mx-auto flex min-h-[94px] w-full max-w-[1500px] items-center justify-between gap-4 px-6 lg:px-10"
       >
-        {/* Logo */}
         <a
           href="#accueil"
           onClick={closeMenu}
@@ -67,61 +73,101 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           </div>
         </a>
 
-        {/* Navigation bureau */}
-        <div className="hidden items-center gap-1 xl:flex">
+        <div
+          className={`hidden items-center gap-1 xl:flex ${
+            isRTL ? "flex-row-reverse" : ""
+          }`}
+        >
           {navigation.map((item) => (
             <a
               key={item.href}
               href={item.href}
               className="rounded-full px-4 py-3 text-sm font-semibold text-white/75 transition duration-300 hover:bg-white/10 hover:text-white"
             >
-              {item.label}
+              {t.nav[item.key]}
             </a>
           ))}
 
           <a
             href="#contact"
-            className="ml-3 inline-flex items-center justify-center rounded-full border border-[#e3bd42]/55 bg-[#e3bd42]/10 px-6 py-3 text-sm font-bold text-[#f0d36f] transition duration-300 hover:-translate-y-0.5 hover:bg-[#e3bd42] hover:text-[#17351f]"
+            className="mx-3 inline-flex items-center justify-center rounded-full border border-[#e3bd42]/55 bg-[#e3bd42]/10 px-6 py-3 text-sm font-bold text-[#f0d36f] transition duration-300 hover:-translate-y-0.5 hover:bg-[#e3bd42] hover:text-[#17351f]"
           >
-            Contact
+            {t.nav.contact}
           </a>
+
+          <div
+            className="flex items-center rounded-full border border-white/15 bg-[#071d12]/55 p-1 backdrop-blur-md"
+            aria-label="Sélection de la langue"
+          >
+            {languages.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setLanguage(item)}
+                className={`rounded-full px-3 py-2 text-xs font-extrabold transition ${
+                  language === item
+                    ? "bg-[#e3bd42] text-[#17351f]"
+                    : "text-white/65 hover:bg-white/10 hover:text-white"
+                }`}
+                aria-pressed={language === item}
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Bouton mobile */}
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((current) => !current)}
-          className="relative z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#071d12]/70 text-white backdrop-blur-md xl:hidden"
-          aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          aria-expanded={isMenuOpen}
-        >
-          <span className="sr-only">
-            {isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          </span>
+        <div className="relative z-50 flex items-center gap-2 xl:hidden">
+          <div className="flex items-center rounded-full border border-white/15 bg-[#071d12]/70 p-1 backdrop-blur-md">
+            {languages.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setLanguage(item)}
+                className={`rounded-full px-2.5 py-2 text-[11px] font-extrabold transition ${
+                  language === item
+                    ? "bg-[#e3bd42] text-[#17351f]"
+                    : "text-white/65"
+                }`}
+                aria-pressed={language === item}
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
 
-          <span className="relative block h-5 w-6">
-            <span
-              className={`absolute left-0 top-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
-                isMenuOpen ? "translate-y-[9px] rotate-45" : ""
-              }`}
-            />
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((current) => !current)}
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#071d12]/70 text-white backdrop-blur-md"
+            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={isMenuOpen}
+          >
+            <span className="sr-only">
+              {isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            </span>
 
-            <span
-              className={`absolute left-0 top-[9px] h-0.5 w-6 rounded-full bg-current transition duration-300 ${
-                isMenuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            />
-
-            <span
-              className={`absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
-                isMenuOpen ? "-translate-y-[9px] -rotate-45" : ""
-              }`}
-            />
-          </span>
-        </button>
+            <span className="relative block h-5 w-6">
+              <span
+                className={`absolute left-0 top-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
+                  isMenuOpen ? "translate-y-[9px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-[9px] h-0.5 w-6 rounded-full bg-current transition duration-300 ${
+                  isMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
+                  isMenuOpen ? "-translate-y-[9px] -rotate-45" : ""
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </nav>
 
-      {/* Menu mobile */}
       <div
         className={`absolute inset-x-0 top-0 z-40 min-h-screen bg-[#06170e]/98 px-6 pb-10 pt-28 backdrop-blur-xl transition duration-300 xl:hidden ${
           isMenuOpen
@@ -129,7 +175,11 @@ export default function Navbar({ logoSrc }: NavbarProps) {
             : "pointer-events-none -translate-y-5 opacity-0"
         }`}
       >
-        <div className="mx-auto flex max-w-xl flex-col gap-3">
+        <div
+          className={`mx-auto flex max-w-xl flex-col gap-3 ${
+            isRTL ? "text-right" : "text-left"
+          }`}
+        >
           {navigation.map((item, index) => (
             <a
               key={item.href}
@@ -137,8 +187,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
               onClick={closeMenu}
               className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-5 text-lg font-bold text-white transition hover:bg-white/10"
             >
-              <span>{item.label}</span>
-
+              <span>{t.nav[item.key]}</span>
               <span className="text-[#e3bd42]">
                 {String(index + 1).padStart(2, "0")}
               </span>
@@ -150,7 +199,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
             onClick={closeMenu}
             className="mt-3 flex items-center justify-center rounded-2xl bg-[#e3bd42] px-6 py-5 text-lg font-extrabold text-[#17351f] transition hover:bg-[#efca54]"
           >
-            Nous contacter
+            {t.nav.contactMobile}
           </a>
 
           <div className="mt-7 border-t border-white/10 pt-6">
@@ -159,8 +208,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
             </p>
 
             <p className="mt-3 max-w-sm text-sm leading-6 text-white/50">
-              Biofertilisants microbiens PGPR issus de consortiums bactériens
-              autochtones algériens.
+              {t.mobileIntro}
             </p>
           </div>
         </div>

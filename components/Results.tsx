@@ -4,45 +4,28 @@ import Image from "next/image";
 
 import Counter from "@/components/Counter";
 import FadeIn from "@/components/FadeIn";
+import { useLanguage } from "@/components/LanguageProvider";
 import { Card, Container, SectionTitle } from "@/components/ui";
-
-const results = [
-  {
-    value: 357,
-    title: "Rendement par épi",
-    description:
-      "Gain maximal observé avec le consortium R5 + RB4 par rapport au témoin non inoculé.",
-  },
-  {
-    value: 184,
-    title: "Nombre de grains par épi",
-    description:
-      "Progression maximale observée avec le consortium R5 + RB4 dans les conditions de l’essai.",
-  },
-  {
-    value: 61,
-    title: "Poids de mille grains",
-    description:
-      "Amélioration maximale du PMG observée avec le consortium R5 + RB4.",
-  },
-];
 
 type ResultsProps = {
   chartSrc: string;
 };
 
 export default function Results({ chartSrc }: ResultsProps) {
+  const { t, isRTL } = useLanguage();
+  const results = t.page.results.cards;
+
   return (
     <section
       id="resultats"
       className="scroll-mt-20 overflow-hidden bg-[#eee9dc] py-24 lg:py-32"
     >
-      <Container>
+      <Container className={isRTL ? "text-right" : "text-left"}>
         <FadeIn>
           <SectionTitle
-            eyebrow="Résultats expérimentaux"
-            title="Des performances observées sur l’orge"
-            description="Les valeurs présentées correspondent aux gains maximaux observés lors des essais comparatifs réalisés avec les consortiums ALGOFERT-BIO®."
+            eyebrow={t.page.results.eyebrow}
+            title={t.page.results.title}
+            description={t.page.results.description}
           />
         </FadeIn>
 
@@ -56,7 +39,11 @@ export default function Results({ chartSrc }: ResultsProps) {
                 <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#75c45b]/10 blur-3xl transition duration-500 group-hover:bg-[#75c45b]/20" />
 
                 <div className="relative z-10">
-                  <p className="flex items-start text-5xl font-black tracking-tight text-[#e3bd42] sm:text-6xl">
+                  <p
+                    className={`flex items-start text-5xl font-black tracking-tight text-[#e3bd42] sm:text-6xl ${
+                      isRTL ? "justify-end" : "justify-start"
+                    }`}
+                  >
                     <Counter
                       value={result.value}
                       prefix="+"
@@ -65,7 +52,11 @@ export default function Results({ chartSrc }: ResultsProps) {
                     />
                   </p>
 
-                  <div className="mt-7 h-px w-16 bg-gradient-to-r from-[#e3bd42] to-transparent" />
+                  <div
+                    className={`mt-7 h-px w-16 bg-gradient-to-r from-[#e3bd42] to-transparent ${
+                      isRTL ? "mr-0 ml-auto rotate-180" : ""
+                    }`}
+                  />
 
                   <h3 className="mt-7 text-2xl font-extrabold text-white">
                     {result.title}
@@ -82,27 +73,30 @@ export default function Results({ chartSrc }: ResultsProps) {
 
         <FadeIn className="mt-14" y={50}>
           <div className="overflow-hidden rounded-[2rem] border border-[#17351f]/10 bg-white p-4 shadow-2xl shadow-[#17351f]/10 sm:p-8">
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div
+              className={`mb-6 flex flex-col gap-3 sm:items-end sm:justify-between ${
+                isRTL ? "sm:flex-row-reverse" : "sm:flex-row"
+              }`}
+            >
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#2e7d32]">
-                  Analyse comparative
+                  {t.page.results.analysisEyebrow}
                 </p>
 
                 <h3 className="mt-2 text-2xl font-extrabold text-[#17351f]">
-                  Nombre de grains par épi et poids de mille grains
+                  {t.page.results.analysisTitle}
                 </h3>
               </div>
 
               <p className="max-w-sm text-sm leading-6 text-[#617066]">
-                Témoin non inoculé comparé aux trois consortiums microbiens
-                évalués au champ.
+                {t.page.results.analysisDescription}
               </p>
             </div>
 
             <div className="overflow-hidden rounded-2xl bg-[#f5f6f3]">
               <Image
                 src={chartSrc}
-                alt="Résultats comparatifs ALGOFERT-BIO sur l’orge"
+                alt={t.page.results.chartAlt}
                 width={1600}
                 height={1400}
                 className="h-auto w-full"
@@ -114,10 +108,7 @@ export default function Results({ chartSrc }: ResultsProps) {
         <FadeIn className="mt-8" delay={0.15}>
           <div className="rounded-2xl border border-[#2e7d32]/15 bg-[#2e7d32]/5 px-6 py-5">
             <p className="text-sm leading-7 text-[#445548]">
-              Les résultats affichés correspondent aux conditions expérimentales
-              des essais réalisés. Ils ne constituent pas une garantie de
-              rendement identique dans toutes les parcelles ou conditions
-              pédoclimatiques.
+              {t.page.results.disclaimer}
             </p>
           </div>
         </FadeIn>

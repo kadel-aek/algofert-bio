@@ -1,9 +1,12 @@
+"use client";
+
 import Image from "next/image";
 
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Results from "@/components/Results";
 import ContactForm from "@/components/ContactForm";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const assets = {
   logoDark: "/images/logo/logo-dark.png",
@@ -28,82 +31,14 @@ const assets = {
   fullFilm: "/videos/algofert-film.mp4",
 };
 
-const benefits = [
-  {
-    number: "01",
-    title: "Consortiums microbiens PGPR",
-    description:
-      "Des associations complémentaires de bactéries autochtones sélectionnées pour leurs propriétés de biofertilisation, de biostimulation et de biocontrôle.",
-  },
-  {
-    number: "02",
-    title: "Recherche algérienne",
-    description:
-      "Une technologie développée au Département de Biotechnologie de l’USTO-MB à partir de microorganismes issus d’écosystèmes algériens.",
-  },
-  {
-    number: "03",
-    title: "Validation au champ",
-    description:
-      "Des essais sur orge réalisés en conditions réelles ont montré une amélioration significative de plusieurs composantes du rendement.",
-  },
-  {
-    number: "04",
-    title: "Agriculture durable",
-    description:
-      "Une solution biologique conçue pour accompagner les performances des cultures et contribuer à la préservation de la fertilité des sols.",
-  },
-];
-
-const products = [
-  {
-    name: "Essentiel",
-    consortium: "RB6 + R5",
-    description:
-      "Formulation associant des fonctions complémentaires de biostimulation et de biocontrôle.",
-    accent: "text-[#75c45b]",
-    border: "border-[#75c45b]/30",
-  },
-  {
-    name: "Performance",
-    consortium: "RB4 + RB6",
-    description:
-      "Formulation associant notamment la solubilisation du phosphore et une activité antifongique.",
-    accent: "text-[#58a7df]",
-    border: "border-[#58a7df]/30",
-  },
-  {
-    name: "Excellence",
-    consortium: "R5 + RB4",
-    description:
-      "Formulation ayant présenté les meilleurs résultats expérimentaux sur plusieurs paramètres.",
-    accent: "text-[#e0b43d]",
-    border: "border-[#e0b43d]/30",
-  },
-];
-
-const technologyFunctions = [
-  {
-    title: "Biostimulation",
-    description: "Développement végétatif et racinaire.",
-  },
-  {
-    title: "Biofertilisation",
-    description: "Fonctions liées à la nutrition des plantes.",
-  },
-  {
-    title: "Biocontrôle",
-    description: "Potentiel biologique contre certains agents nuisibles.",
-  },
-  {
-    title: "Souches autochtones",
-    description: "Microorganismes issus d’écosystèmes algériens.",
-  },
-];
-
 export default function Home() {
+  const { t, isRTL } = useLanguage();
+  const benefits = t.page.benefits;
+  const products = t.page.products;
+  const technologyFunctions = t.page.technology.functions;
+
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f7f3e8] text-[#17351f]">
+    <main className={`min-h-screen overflow-x-hidden bg-[#f7f3e8] text-[#17351f] ${isRTL ? "text-right" : "text-left"}`}>
       {/* Navigation */}
       <Navbar logoSrc={assets.logoDark} />
 
@@ -118,17 +53,15 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-2">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-              Notre technologie
+              {t.page.technology.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              La puissance des microorganismes bénéfiques
+              {t.page.technology.title}
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-[#4c5f51]">
-              ALGOFERT-BIO® repose sur des consortiums de bactéries
-              rhizosphériques promotrices de la croissance des plantes,
-              sélectionnées pour leurs fonctions complémentaires.
+              {t.page.technology.description}
             </p>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -167,11 +100,11 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#e3bd42]">
-              Du sol fragilisé à la culture vigoureuse
+              {t.page.problem.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Une réponse biologique développée pour les cultures
+              {t.page.problem.title}
             </h2>
           </div>
 
@@ -190,16 +123,15 @@ export default function Home() {
 
               <div className="p-7">
                 <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#e3bd42]">
-                  Le défi
+                  {t.page.problem.challengeLabel}
                 </p>
 
                 <h3 className="mt-3 text-2xl font-bold">
-                  Sols et cultures soumis au stress
+                  {t.page.problem.challengeTitle}
                 </h3>
 
                 <p className="mt-4 leading-7 text-white/65">
-                  La diminution de la fertilité biologique peut limiter le
-                  développement racinaire et les performances agronomiques.
+                  {t.page.problem.challengeDescription}
                 </p>
               </div>
             </article>
@@ -218,16 +150,15 @@ export default function Home() {
 
               <div className="p-7">
                 <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#e3bd42]">
-                  La solution
+                  {t.page.problem.solutionLabel}
                 </p>
 
                 <h3 className="mt-3 text-2xl font-bold">
-                  Des cultures accompagnées par les PGPR
+                  {t.page.problem.solutionTitle}
                 </h3>
 
                 <p className="mt-4 leading-7 text-white/65">
-                  Les consortiums sont développés pour soutenir les interactions
-                  bénéfiques entre les racines, le sol et les microorganismes.
+                  {t.page.problem.solutionDescription}
                 </p>
               </div>
             </article>
@@ -254,40 +185,38 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b2e1d]/75 via-transparent to-transparent" />
 
               <p className="absolute bottom-6 left-6 max-w-md text-sm font-medium leading-6 text-white">
-                Suivi des essais dans une parcelle agricole algérienne.
+                {t.page.field.caption}
               </p>
             </div>
 
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-                Technologie évaluée au champ
+                {t.page.field.eyebrow}
               </p>
 
               <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-                Des essais réalisés en conditions réelles
+                {t.page.field.title}
               </h2>
 
               <p className="mt-6 text-lg leading-8 text-[#536158]">
-                Les formulations ont été évaluées sur orge en conditions de
-                culture pluviale afin d’étudier leur effet sur le développement
-                végétatif et les composantes du rendement.
+                {t.page.field.description}
               </p>
 
               <ul className="mt-8 space-y-4 text-[#34483a]">
                 <li className="rounded-2xl bg-[#f2f5ef] px-5 py-4">
-                  ✓ Culture pluviale
+                  ✓ {t.page.field.items[0]}
                 </li>
 
                 <li className="rounded-2xl bg-[#f2f5ef] px-5 py-4">
-                  ✓ Conditions semi-arides
+                  ✓ {t.page.field.items[1]}
                 </li>
 
                 <li className="rounded-2xl bg-[#f2f5ef] px-5 py-4">
-                  ✓ Témoin non inoculé
+                  ✓ {t.page.field.items[2]}
                 </li>
 
                 <li className="rounded-2xl bg-[#f2f5ef] px-5 py-4">
-                  ✓ Mesures agronomiques et analyses statistiques
+                  ✓ {t.page.field.items[3]}
                 </li>
               </ul>
             </div>
@@ -305,15 +234,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Preuves visuelles */}
+      {/* {t.page.visual.eyebrow} */}
       <section className="bg-[#102d1c] px-6 py-24 text-white lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#e3bd42]">
-            Preuves visuelles
+            {t.page.visual.eyebrow}
           </p>
 
           <h2 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Des différences visibles sur les plantes et les épis
+            {t.page.visual.title}
           </h2>
 
           <div className="mt-14 grid gap-6 lg:grid-cols-3">
@@ -327,10 +256,10 @@ export default function Home() {
               />
 
               <div className="p-6">
-                <h3 className="text-xl font-bold">Plantes entières</h3>
+                <h3 className="text-xl font-bold">{t.page.visual.cards[0].title}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-white/60">
-                  Comparaison du développement aérien et racinaire.
+                  {t.page.visual.cards[0].description}
                 </p>
               </div>
             </article>
@@ -345,10 +274,10 @@ export default function Home() {
               />
 
               <div className="p-6">
-                <h3 className="text-xl font-bold">Épis verts</h3>
+                <h3 className="text-xl font-bold">{t.page.visual.cards[1].title}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-white/60">
-                  Observation des différences de longueur et de formation.
+                  {t.page.visual.cards[1].description}
                 </p>
               </div>
             </article>
@@ -363,10 +292,10 @@ export default function Home() {
               />
 
               <div className="p-6">
-                <h3 className="text-xl font-bold">Épis à maturité</h3>
+                <h3 className="text-xl font-bold">{t.page.visual.cards[2].title}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-white/60">
-                  Comparaison du témoin et des trois consortiums.
+                  {t.page.visual.cards[2].description}
                 </p>
               </div>
             </article>
@@ -378,11 +307,11 @@ export default function Home() {
       <section className="bg-white px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-            Pourquoi ALGOFERT-BIO® ?
+            {t.page.benefitsEyebrow}
           </p>
 
           <h2 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Une innovation scientifique pensée pour le terrain
+            {t.page.benefitsTitle}
           </h2>
 
           <div className="mt-16 grid gap-px overflow-hidden rounded-3xl bg-[#dfe5de] md:grid-cols-2">
@@ -436,30 +365,28 @@ export default function Home() {
 
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-              Du laboratoire au champ
+              {t.page.formulations.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Des formulations préparées et évaluées
+              {t.page.formulations.title}
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-[#536158]">
-              Les consortiums ont été préparés, formulés sur support solide puis
-              évalués dans le cadre des essais expérimentaux
-              d’ALGOFERT-BIO®.
+              {t.page.formulations.description}
             </p>
 
             <div className="mt-8 space-y-4">
               <div className="rounded-2xl border border-[#2e7d32]/10 bg-[#f2f5ef] px-5 py-4">
-                Culture et concentration de la biomasse bactérienne
+                {t.page.formulations.steps[0]}
               </div>
 
               <div className="rounded-2xl border border-[#2e7d32]/10 bg-[#f2f5ef] px-5 py-4">
-                Incorporation sur un support solide stérilisé
+                {t.page.formulations.steps[1]}
               </div>
 
               <div className="rounded-2xl border border-[#2e7d32]/10 bg-[#f2f5ef] px-5 py-4">
-                Contrôle de la viabilité et de la pureté microbiologique
+                {t.page.formulations.steps[2]}
               </div>
             </div>
           </div>
@@ -471,24 +398,20 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-              De la recherche au produit
+              {t.page.teamProduct.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Une technologie développée par une équipe scientifique algérienne
+              {t.page.teamProduct.title}
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-[#536158]">
-              ALGOFERT-BIO® est développé par Pr SELAMI Nawel et Dr DRAOU
-              Nassima, au Département de Biotechnologie de l’USTO-MB, depuis la
-              sélection des microorganismes jusqu’à la formulation et aux
-              essais au champ.
+              {t.page.teamProduct.description}
             </p>
 
             <div className="mt-8 rounded-2xl border border-[#2e7d32]/15 bg-white/60 px-5 py-4">
               <p className="text-sm font-semibold leading-6 text-[#34483a]">
-                Recherche microbiologique, formulation, validation expérimentale
-                et préparation du transfert technologique.
+                {t.page.teamProduct.note}
               </p>
             </div>
           </div>
@@ -516,11 +439,11 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#e3bd42]">
-              Notre gamme
+              {t.page.productsSection.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Trois consortiums complémentaires
+              {t.page.productsSection.title}
             </h2>
           </div>
 
@@ -551,7 +474,7 @@ export default function Home() {
                 </h3>
 
                 <p className="mt-4 font-semibold text-white/80">
-                  Consortium : {product.consortium}
+                  {t.page.productsSection.consortiumLabel} : {product.consortium}
                 </p>
 
                 <p className="mt-4 text-sm leading-6 text-white/60">
@@ -571,25 +494,22 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-              Porteuses du projet
+              {t.page.team.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Une innovation portée par le Département de Biotechnologie
+              {t.page.team.title}
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-[#536158]">
-              ALGOFERT-BIO® est porté par Pr SELAMI Nawel et Dr DRAOU Nassima,
-              enseignantes-chercheuses au Département de Biotechnologie de
-              l’Université des Sciences et de la Technologie Mohamed Boudiaf
-              d’Oran.
+              {t.page.team.description}
             </p>
           </div>
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             <article className="rounded-3xl bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#c4971b]">
-                Porteuse du projet
+                {t.page.team.cardLabel}
               </p>
 
               <h3 className="mt-5 text-3xl font-extrabold">
@@ -597,7 +517,7 @@ export default function Home() {
               </h3>
 
               <p className="mt-3 text-[#5a685e]">
-                Département de Biotechnologie — USTO-MB
+                {t.page.team.departmentShort}
               </p>
 
               <a
@@ -610,7 +530,7 @@ export default function Home() {
 
             <article className="rounded-3xl bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#c4971b]">
-                Porteuse du projet
+                {t.page.team.cardLabel}
               </p>
 
               <h3 className="mt-5 text-3xl font-extrabold">
@@ -618,7 +538,7 @@ export default function Home() {
               </h3>
 
               <p className="mt-3 text-[#5a685e]">
-                Département de Biotechnologie — USTO-MB
+                {t.page.team.departmentShort}
               </p>
 
               <a
@@ -632,25 +552,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Innovation et maturation */}
+      {/* {t.page.innovation.eyebrow} */}
       <section className="bg-[#17351f] px-6 py-24 text-white lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#e3bd42]">
-            Innovation et maturation
+            {t.page.innovation.eyebrow}
           </p>
 
           <h2 className="mx-auto mt-6 max-w-4xl text-4xl font-extrabold tracking-tight sm:text-5xl">
-            De la recherche universitaire vers une solution agricole
-            industrialisable
+            {t.page.innovation.title}
           </h2>
 
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-white/70">
-            Le projet poursuit sa maturation technologique, son développement
-            réglementaire et la préparation de sa production pilote.
+            {t.page.innovation.description}
           </p>
 
           <div className="mt-8 inline-flex rounded-full border border-[#e3bd42]/40 bg-[#e3bd42]/10 px-6 py-3 font-semibold text-[#f0d36f]">
-            Demande de brevet déposée auprès de l’INAPI
+            {t.page.innovation.badge}
           </div>
         </div>
       </section>
@@ -663,23 +581,21 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#2e7d32]">
-              Contact et partenariat
+              {t.page.contact.eyebrow}
             </p>
 
             <h2 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Construisons ensemble l’agriculture de demain
+              {t.page.contact.title}
             </h2>
 
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#536158]">
-              ALGOFERT-BIO® recherche des partenaires scientifiques, agricoles,
-              techniques, industriels et financiers pour accompagner sa
-              maturation, sa production pilote et sa future mise sur le marché.
+              {t.page.contact.description}
             </p>
 
             <div className="mt-10 space-y-4">
               <div className="rounded-2xl bg-white p-6 shadow-sm">
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#c4971b]">
-                  Porteuses du projet
+                  {t.page.team.eyebrow}
                 </p>
 
                 <div className="mt-5 space-y-5">
@@ -707,20 +623,25 @@ export default function Home() {
                 </div>
 
                 <p className="mt-5 text-sm leading-6 text-[#617066]">
-                  Département de Biotechnologie
+                  {t.page.footer.department}
                   <br />
-                  Université des Sciences et de la Technologie Mohamed Boudiaf
+                  {t.page.footer.university}
                   d’Oran — USTO-MB
                 </p>
               </div>
 
               <div className="rounded-2xl bg-[#17351f] p-6 text-white">
-                <p className="font-bold">Partenariats recherchés</p>
+                <p className="font-bold">{t.page.contact.partnersTitle}</p>
 
-                <p className="mt-3 text-sm leading-6 text-white/65">
-                  Exploitations agricoles, industriels, distributeurs,
-                  investisseurs, structures de contrôle, laboratoires et
-                  organismes de financement.
+                <p 
+				  className={`mt-3 text-white/70 ${
+				   isRTL
+                     ? "text-lg leading-8"
+                     : "text-sm leading-6"
+                  }`}
+                >
+                  {t.page.contact.partnersDescription}
+                  
                 </p>
               </div>
             </div>
@@ -748,14 +669,13 @@ export default function Home() {
             </p>
 
             <p className="mt-5 max-w-xl text-sm leading-7 text-white/50">
-              Projet de développement d’une gamme de biofertilisants microbiens
-              PGPR à base de consortiums bactériens autochtones algériens.
+              {t.page.footer.description}
             </p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7">
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#e3bd42]">
-              Porteuses du projet
+              {t.page.team.eyebrow}
             </p>
 
             <div className="mt-6 space-y-5">
@@ -784,11 +704,11 @@ export default function Home() {
 
             <div className="mt-7 border-t border-white/10 pt-6">
               <p className="text-sm font-semibold text-white/80">
-                Département de Biotechnologie
+                {t.page.footer.department}
               </p>
 
               <p className="mt-2 text-sm leading-6 text-white/50">
-                Université des Sciences et de la Technologie Mohamed Boudiaf
+                {t.page.footer.university}
                 d’Oran
                 <br />
                 USTO-MB — Oran, Algérie
@@ -798,9 +718,9 @@ export default function Home() {
         </div>
 
         <div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 ALGOFERT-BIO®. Tous droits réservés.</p>
+          <p>{t.page.footer.copyright}</p>
 
-          <p>Projet accompagné par l’Incubateur USTO-MB</p>
+          <p>{t.page.footer.incubator}</p>
         </div>
       </footer>
     </main>
