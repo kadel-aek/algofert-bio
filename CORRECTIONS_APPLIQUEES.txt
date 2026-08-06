@@ -1,0 +1,16 @@
+ALGOFERT-BIO — corrections appliquées
+
+- i18n.ts remplacé par la version cohérente FR / EN / AR incluant :
+  * page.results
+  * page.contactForm
+  * toutes les clés utilisées par Results.tsx et ContactForm.tsx
+- Results.tsx corrigé pour utiliser uniquement t.page.results.
+- ContactForm.tsx harmonisé avec les traductions centralisées.
+- robots.ts et sitemap.ts mis à jour vers https://algofert-bio.com.
+- Icônes PWA 192x192 et 512x512 copiées dans public/.
+- Manifest conservé dans public/manifest.webmanifest.
+- Vérification TypeScript réussie avec : npx tsc --noEmit.
+
+Remarque : la compilation Next.js complète n'a pas pu être exécutée dans l'environnement de correction,
+car le binaire SWC Linux correspondant à Next.js 16.2.12 ne pouvait pas être téléchargé depuis le registre interne.
+La vérification TypeScript, elle, s'est terminée sans erreur.
