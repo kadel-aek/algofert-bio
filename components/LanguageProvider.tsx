@@ -14,13 +14,14 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 const STORAGE_KEY = "algofert-language";
 
-export default function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("fr");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (saved === "fr" || saved === "en" || saved === "ar") setLanguageState(saved);
-  }, []);
+export default function LanguageProvider({
+  children,
+  initialLanguage = "fr",
+}: {
+  children: ReactNode;
+  initialLanguage?: Language;
+}) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   useEffect(() => {
     const isRTL = language === "ar";

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { useLanguage } from "@/components/LanguageProvider";
@@ -8,6 +9,7 @@ import type { Language } from "@/lib/i18n";
 
 type NavbarProps = {
   logoSrc: string;
+  languagePaths?: Record<Language, string>;
 };
 
 const navigation = [
@@ -20,7 +22,7 @@ const navigation = [
 
 const languages: Language[] = ["fr", "ar", "en"];
 
-export default function Navbar({ logoSrc }: NavbarProps) {
+export default function Navbar({ logoSrc, languagePaths }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -55,23 +57,23 @@ export default function Navbar({ logoSrc }: NavbarProps) {
         aria-label="Navigation principale"
         className="mx-auto flex min-h-[72px] w-full max-w-[1500px] items-center justify-between gap-2 px-3 sm:min-h-[82px] sm:gap-3 sm:px-5 lg:min-h-[94px] lg:px-10"
       >
-        <a
-          href="#accueil"
+        <Link
+          href={`/${language}#accueil`}
           onClick={closeMenu}
           className="relative z-50 flex shrink-0 items-center"
           aria-label="Retour à l’accueil ALGOFERT-BIO"
         >
-          <div className="flex h-[64px] w-[128px] items-center justify-center overflow-hidden sm:h-[76px] sm:w-[185px] lg:h-[88px] lg:w-[330px]">
+          <div className="flex h-[52px] w-[92px] items-center justify-center overflow-hidden sm:h-[66px] sm:w-[150px] lg:h-[88px] lg:w-[300px]">
             <Image
               src={logoSrc}
               alt="Logo ALGOFERT-BIO"
               width={520}
               height={200}
               priority
-              className="h-[66px] w-[128px] scale-[1.28] object-contain object-center drop-shadow-[0_5px_16px_rgba(0,0,0,0.45)] sm:h-[82px] sm:w-[185px] sm:scale-[1.4] lg:h-[100px] lg:w-[330px] lg:scale-[1.6]"
+              className="h-[54px] w-[92px] scale-[1.16] object-contain object-center drop-shadow-[0_5px_16px_rgba(0,0,0,0.45)] sm:h-[72px] sm:w-[150px] sm:scale-[1.28] lg:h-[100px] lg:w-[300px] lg:scale-[1.5]"
             />
           </div>
-        </a>
+        </Link>
 
         <div
           className={`hidden items-center gap-1 xl:flex ${
@@ -81,7 +83,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           {navigation.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={`/${language}${item.href}`}
               className="rounded-full px-4 py-3 text-sm font-semibold text-white/75 transition duration-300 hover:bg-white/10 hover:text-white"
             >
               {t.nav[item.key]}
@@ -89,7 +91,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           ))}
 
           <a
-            href="#contact"
+            href={`/${language}#contact`}
             className="mx-3 inline-flex items-center justify-center rounded-full border border-[#e3bd42]/55 bg-[#e3bd42]/10 px-6 py-3 text-sm font-bold text-[#f0d36f] transition duration-300 hover:-translate-y-0.5 hover:bg-[#e3bd42] hover:text-[#17351f]"
           >
             {t.nav.contact}
@@ -100,9 +102,9 @@ export default function Navbar({ logoSrc }: NavbarProps) {
             aria-label="Sélection de la langue"
           >
             {languages.map((item) => (
-              <button
+              <Link
                 key={item}
-                type="button"
+                href={languagePaths?.[item] ?? `/${item}`}
                 onClick={() => setLanguage(item)}
                 className={`rounded-full px-3 py-2 text-xs font-extrabold transition ${
                   language === item
@@ -112,7 +114,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
                 aria-pressed={language === item}
               >
                 {item.toUpperCase()}
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -120,9 +122,9 @@ export default function Navbar({ logoSrc }: NavbarProps) {
         <div className="relative z-50 flex shrink-0 items-center gap-1.5 sm:gap-2 xl:hidden">
           <div className="flex items-center rounded-full border border-white/15 bg-[#071d12]/70 p-0.5 backdrop-blur-md sm:p-1">
             {languages.map((item) => (
-              <button
+              <Link
                 key={item}
-                type="button"
+                href={languagePaths?.[item] ?? `/${item}`}
                 onClick={() => setLanguage(item)}
                 className={`rounded-full px-2 py-1.5 text-[10px] font-extrabold transition sm:px-2.5 sm:py-2 sm:text-[11px] ${
                   language === item
@@ -132,7 +134,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
                 aria-pressed={language === item}
               >
                 {item.toUpperCase()}
-              </button>
+              </Link>
             ))}
           </div>
 
@@ -183,7 +185,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           {navigation.map((item, index) => (
             <a
               key={item.href}
-              href={item.href}
+              href={`/${language}${item.href}`}
               onClick={closeMenu}
               className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-5 text-lg font-bold text-white transition hover:bg-white/10"
             >
@@ -195,7 +197,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           ))}
 
           <a
-            href="#contact"
+            href={`/${language}#contact`}
             onClick={closeMenu}
             className="mt-3 flex items-center justify-center rounded-2xl bg-[#e3bd42] px-6 py-5 text-lg font-extrabold text-[#17351f] transition hover:bg-[#efca54]"
           >

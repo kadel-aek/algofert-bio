@@ -1,0 +1,41 @@
+ALGOFERT-BIO — LANCEMENT DU FRONTEND EN LOCAL
+================================================
+
+Prérequis
+---------
+- Node.js 20.9 ou version plus récente
+- npm
+
+Windows — Invite de commandes (CMD)
+------------------------------------
+1. Décompressez l’archive.
+2. Ouvrez CMD dans le dossier obtenu.
+3. Exécutez :
+
+   npm install
+   npm run dev
+
+4. Ouvrez ensuite : http://localhost:3000
+   Le site redirige automatiquement vers la version française /fr.
+
+Test en mode production
+-----------------------
+   npm run build
+   npm run start
+
+URLs principales
+----------------
+- Français : http://localhost:3000/fr
+- English  : http://localhost:3000/en
+- العربية  : http://localhost:3000/ar
+
+Pages stratégiques
+------------------
+- /fr/investisseurs, /fr/partenaires, /fr/recherche, /fr/actualites
+- /en/investors, /en/partners, /en/research, /en/news
+- /ar/investors, /ar/partners, /ar/research, /ar/news
+
+Remarque
+--------
+Les dossiers node_modules et .next ne sont pas inclus dans l’archive ; ils
+sont recréés localement par npm install et npm run dev/build.

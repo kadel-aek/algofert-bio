@@ -6,7 +6,10 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Results from "@/components/Results";
 import ContactForm from "@/components/ContactForm";
+import LanguageProvider from "@/components/LanguageProvider";
+import StrategicLinks from "@/components/StrategicLinks";
 import { useLanguage } from "@/components/LanguageProvider";
+import type { Language } from "@/lib/i18n";
 
 const assets = {
   logoDark: "/images/logo/logo-dark.png",
@@ -31,7 +34,7 @@ const assets = {
   fullFilm: "/videos/algofert-film.mp4",
 };
 
-export default function Home() {
+function HomeContent() {
   const { t, isRTL } = useLanguage();
   const benefits = t.page.benefits;
   const products = t.page.products;
@@ -573,6 +576,8 @@ export default function Home() {
         </div>
       </section>
 
+      <StrategicLinks />
+
       {/* Contact */}
       <section
         id="contact"
@@ -729,5 +734,17 @@ export default function Home() {
         </div>
       </footer>
     </main>
+  );
+}
+
+export default function HomePage({
+  initialLanguage,
+}: {
+  initialLanguage: Language;
+}) {
+  return (
+    <LanguageProvider key={initialLanguage} initialLanguage={initialLanguage}>
+      <HomeContent />
+    </LanguageProvider>
   );
 }

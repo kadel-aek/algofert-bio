@@ -24,7 +24,7 @@ export default function ContactForm() {
   const { t, isRTL } = useLanguage();
   const formText = t.page.contactForm;
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const startedAt = useRef(Date.now());
+  const startedAt = useRef(0);
   const [turnstileToken, setTurnstileToken] = useState("");
 
   const [status, setStatus] = useState<FormStatus>({
@@ -33,6 +33,7 @@ export default function ContactForm() {
   });
 
   useEffect(() => {
+    startedAt.current = Date.now();
     window.algofertTurnstileCallback = setTurnstileToken;
     window.algofertTurnstileExpired = () => setTurnstileToken("");
 
@@ -55,7 +56,7 @@ export default function ContactForm() {
       subject: String(formData.get("subject") || ""),
       message: String(formData.get("message") || ""),
       website: String(formData.get("website") || ""),
-      startedAt: startedAt.current,
+      startedAt: startedAt.current || Date.now(),
       turnstileToken,
     };
 
@@ -73,11 +74,7 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       });
 
-      const data = (await response.json()) as {
-        success?: boolean;
-        message?: string;
-        error?: string;
-      };
+      await response.json();
 
       if (!response.ok) {
         throw new Error(formText.error);
