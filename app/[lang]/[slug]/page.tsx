@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import JsonLd from "@/components/JsonLd";
 import StrategicPage from "@/components/StrategicPage";
 import { strategicPages } from "@/lib/strategic-pages";
 import {
@@ -57,5 +58,33 @@ export default async function Page({ params }: Props) {
   if (!isLanguage(lang)) notFound();
   const pageKey = findStrategicPageKey(lang, slug);
   if (!pageKey) notFound();
-  return <StrategicPage language={lang} pageKey={pageKey} />;
+
+  const page = strategicPages[pageKey][lang];
+  const canonical = `${siteUrl}${strategicPath(pageKey, lang)}`;
+  const homeLabels = { fr: "Accueil", en: "Home", ar: "الرئيسية" };
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: homeLabels[lang],
+        item: `${siteUrl}/${lang}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: page.label,
+        item: canonical,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <JsonLd id="algofert-breadcrumb-schema" data={breadcrumbData} />
+      <StrategicPage language={lang} pageKey={pageKey} />
+    </>
+  );
 }

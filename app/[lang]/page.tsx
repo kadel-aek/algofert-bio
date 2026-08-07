@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import HomePage from "@/components/HomePage";
+import JsonLd from "@/components/JsonLd";
 import { translations } from "@/lib/i18n";
 import {
   isLanguage,
@@ -38,5 +39,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { lang } = await params;
   if (!isLanguage(lang)) notFound();
-  return <HomePage initialLanguage={lang} />;
+
+  const description = translations[lang].mobileIntro;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        name: "ALGOFERT-BIO®",
+        alternateName: "ALGOFERT-BIO",
+        url: siteUrl,
+        logo: `${siteUrl}/icon-512.png`,
+        description,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Oran",
+          addressCountry: "DZ",
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "ALGOFERT-BIO®",
+        inLanguage: ["fr", "en", "ar"],
+        publisher: { "@id": `${siteUrl}/#organization` },
+      },
+    ],
+  };
+
+  return (
+    <>
+      <JsonLd id="algofert-organization-schema" data={structuredData} />
+      <HomePage initialLanguage={lang} />
+    </>
+  );
 }
