@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Script from "next/script";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -9,14 +10,37 @@ type FormStatus = {
   message: string;
 };
 
+declare global {
+  interface Window {
+    algofertTurnstileCallback?: (token: string) => void;
+    algofertTurnstileExpired?: () => void;
+    turnstile?: {
+      reset: () => void;
+    };
+  }
+}
+
 export default function ContactForm() {
   const { t, isRTL } = useLanguage();
   const formText = t.page.contactForm;
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const startedAt = useRef(Date.now());
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const [status, setStatus] = useState<FormStatus>({
     type: "idle",
     message: "",
   });
+
+  useEffect(() => {
+    window.algofertTurnstileCallback = setTurnstileToken;
+    window.algofertTurnstileExpired = () => setTurnstileToken("");
+
+    return () => {
+      delete window.algofertTurnstileCallback;
+      delete window.algofertTurnstileExpired;
+    };
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,6 +54,9 @@ export default function ContactForm() {
       email: String(formData.get("email") || ""),
       subject: String(formData.get("subject") || ""),
       message: String(formData.get("message") || ""),
+      website: String(formData.get("website") || ""),
+      startedAt: startedAt.current,
+      turnstileToken,
     };
 
     setStatus({
@@ -57,6 +84,9 @@ export default function ContactForm() {
       }
 
       form.reset();
+      startedAt.current = Date.now();
+      setTurnstileToken("");
+      window.turnstile?.reset();
 
       setStatus({
         type: "success",
@@ -71,61 +101,91 @@ export default function ContactForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      dir={isRTL ? "rtl" : "ltr"}
-      className={`rounded-3xl bg-white p-7 shadow-xl shadow-[#17351f]/10 sm:p-10 ${
-        isRTL ? "text-right" : "text-left"
-      }`}
-    >
-      <div className="grid gap-6 sm:grid-cols-2">
-        <div>
-          <label htmlFor="name" className="mb-2 block text-sm font-bold">
-            {formText.nameLabel}
-          </label>
-
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            placeholder={formText.namePlaceholder}
-            className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="organization" className="mb-2 block text-sm font-bold">
-            {formText.organizationLabel}
-          </label>
-
-          <input
-            id="organization"
-            name="organization"
-            type="text"
-            placeholder={formText.organizationPlaceholder}
-            className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
-          />
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <label htmlFor="email" className="mb-2 block text-sm font-bold">
-          {formText.emailLabel}
-        </label>
-
-        <input
-          id="email"
-          name="email"
-          type="email"
-          dir="ltr"
-          required
-          placeholder={formText.emailPlaceholder}
-          className={`w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15 ${
-            isRTL ? "text-right" : "text-left"
-          }`}
+    <>
+      {turnstileSiteKey && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="afterInteractive"
         />
-      </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        dir={isRTL ? "rtl" : "ltr"}
+        className={`rounded-3xl bg-white p-7 shadow-xl shadow-[#17351f]/10 sm:p-10 ${
+          isRTL ? "text-right" : "text-left"
+        }`}
+      >
+        <div
+          className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+          aria-hidden="true"
+        >
+          <label htmlFor="website">Website</label>
+          <input
+            id="website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="name" className="mb-2 block text-sm font-bold">
+              {formText.nameLabel}
+            </label>
+
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              maxLength={120}
+              placeholder={formText.namePlaceholder}
+              className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="organization"
+              className="mb-2 block text-sm font-bold"
+            >
+              {formText.organizationLabel}
+            </label>
+
+            <input
+              id="organization"
+              name="organization"
+              type="text"
+              required
+              minLength={2}
+              maxLength={160}
+              placeholder={formText.organizationPlaceholder}
+              className="w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <label htmlFor="email" className="mb-2 block text-sm font-bold">
+            {formText.emailLabel}
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            dir="ltr"
+            required
+            maxLength={254}
+            placeholder={formText.emailPlaceholder}
+            className={`w-full rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15 ${
+              isRTL ? "text-right" : "text-left"
+            }`}
+          />
+        </div>
 
       <div className="mt-6">
         <label htmlFor="subject" className="mb-2 block text-sm font-bold">
@@ -173,14 +233,32 @@ export default function ContactForm() {
           name="message"
           rows={6}
           required
+          minLength={20}
+          maxLength={5000}
           placeholder={formText.messagePlaceholder}
           className="w-full resize-none rounded-2xl border border-[#dbe2d8] bg-[#f8faf7] px-4 py-3 outline-none transition focus:border-[#2e7d32] focus:ring-2 focus:ring-[#2e7d32]/15"
         />
       </div>
 
+      {turnstileSiteKey && (
+        <div className="mt-6 flex justify-center">
+          <div
+            className="cf-turnstile"
+            data-sitekey={turnstileSiteKey}
+            data-callback="algofertTurnstileCallback"
+            data-expired-callback="algofertTurnstileExpired"
+            data-action="contact"
+            data-theme="light"
+          />
+        </div>
+      )}
+
       <button
         type="submit"
-        disabled={status.type === "loading"}
+        disabled={
+          status.type === "loading" ||
+          Boolean(turnstileSiteKey && !turnstileToken)
+        }
         className="mt-7 inline-flex w-full justify-center rounded-full bg-[#17351f] px-7 py-4 font-bold text-white transition hover:-translate-y-1 hover:bg-[#245331] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status.type === "loading" ? formText.loading : formText.submit}
@@ -199,6 +277,7 @@ export default function ContactForm() {
           {status.message}
         </p>
       )}
-    </form>
+      </form>
+    </>
   );
 }

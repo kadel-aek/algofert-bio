@@ -8,7 +8,53 @@ type ContactRequest = {
   email?: string;
   subject?: string;
   message?: string;
+  website?: string;
+  startedAt?: number;
+  turnstileToken?: string;
 };
+
+type RateLimitEntry = {
+  count: number;
+  resetAt: number;
+};
+
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const MINIMUM_FORM_TIME_MS = 2_000;
+const MAX_REQUEST_SIZE = 20_000;
+
+const allowedSubjects = new Set([
+  "Partenariat scientifique",
+  "Essai agricole",
+  "Partenariat industriel",
+  "Investissement et financement",
+  "Distribution",
+  "Autre demande",
+]);
+
+const spamPatterns = [
+  /site web plus complet/i,
+  /présence en ligne professionnelle/i,
+  /nous pouvons vous aider à créer/i,
+  /web\s*design/i,
+  /website\s*(design|development|redesign)/i,
+  /digital marketing/i,
+  /agence web/i,
+  /référencement\s+(naturel|seo)/i,
+  /search engine optimization/i,
+  /guest post/i,
+  /backlinks?/i,
+  /casino|cryptocurrency|forex|payday loan/i,
+];
+
+const globalRateLimit = globalThis as typeof globalThis & {
+  algofertContactRateLimit?: Map<string, RateLimitEntry>;
+};
+
+const rateLimitStore =
+  globalRateLimit.algofertContactRateLimit ?? new Map<string, RateLimitEntry>();
+
+globalRateLimit.algofertContactRateLimit = rateLimitStore;
 
 function escapeHtml(value: string): string {
   return value
@@ -19,8 +65,99 @@ function escapeHtml(value: string): string {
     .replaceAll("'", "&#039;");
 }
 
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip")?.trim() ||
+    "unknown"
+  );
+}
+
+function isRateLimited(ip: string): { limited: boolean; retryAfter: number } {
+  const now = Date.now();
+  const existing = rateLimitStore.get(ip);
+
+  if (!existing || existing.resetAt <= now) {
+    rateLimitStore.set(ip, {
+      count: 1,
+      resetAt: now + RATE_LIMIT_WINDOW_MS,
+    });
+
+    return { limited: false, retryAfter: 0 };
+  }
+
+  if (existing.count >= RATE_LIMIT_MAX) {
+    return {
+      limited: true,
+      retryAfter: Math.max(1, Math.ceil((existing.resetAt - now) / 1000)),
+    };
+  }
+
+  existing.count += 1;
+  rateLimitStore.set(ip, existing);
+
+  return { limited: false, retryAfter: 0 };
+}
+
+function looksPromotional(subject: string, message: string): boolean {
+  const content = `${subject}\n${message}`;
+  const matches = spamPatterns.filter((pattern) => pattern.test(content)).length;
+  const linkCount = (content.match(/https?:\/\/|www\./gi) || []).length;
+
+  return matches >= 1 || linkCount >= 3;
+}
+
+async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+
+  if (!secret) {
+    return true;
+  }
+
+  if (!token) {
+    return false;
+  }
+
+  const formData = new FormData();
+  formData.set("secret", secret);
+  formData.set("response", token);
+
+  if (ip !== "unknown") {
+    formData.set("remoteip", ip);
+  }
+
+  const response = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      body: formData,
+      signal: AbortSignal.timeout(5_000),
+    }
+  );
+
+  if (!response.ok) {
+    return false;
+  }
+
+  const result = (await response.json()) as {
+    success?: boolean;
+    action?: string;
+  };
+
+  return result.success === true && result.action === "contact";
+}
+
 export async function POST(request: Request) {
   try {
+    const contentLength = Number(request.headers.get("content-length") || 0);
+
+    if (contentLength > MAX_REQUEST_SIZE) {
+      return Response.json(
+        { success: false, error: "La requête est trop volumineuse." },
+        { status: 413 }
+      );
+    }
+
     const body = (await request.json()) as ContactRequest;
 
     const name = body.name?.trim() ?? "";
@@ -28,14 +165,43 @@ export async function POST(request: Request) {
     const email = body.email?.trim() ?? "";
     const subject = body.subject?.trim() ?? "";
     const message = body.message?.trim() ?? "";
+    const website = body.website?.trim() ?? "";
+    const startedAt = Number(body.startedAt || 0);
+    const turnstileToken = body.turnstileToken?.trim() ?? "";
 
-    if (!name || !email || !subject || !message) {
+    // Un robot remplit souvent ce champ invisible ou envoie le formulaire
+    // instantanément. On répond comme si l'envoi avait réussi sans expédier
+    // d'e-mail, afin de ne pas lui révéler le filtre.
+    if (
+      website ||
+      !startedAt ||
+      Date.now() - startedAt < MINIMUM_FORM_TIME_MS
+    ) {
+      return Response.json({ success: true }, { status: 200 });
+    }
+
+    if (!name || !organization || !email || !subject || !message) {
       return Response.json(
         {
           success: false,
           error:
-            "Veuillez remplir le nom, l’adresse e-mail, l’objet et le message.",
+            "Veuillez remplir le nom, l’organisme, l’adresse e-mail, l’objet et le message.",
         },
+        { status: 400 }
+      );
+    }
+
+    if (
+      name.length > 120 ||
+      organization.length > 160 ||
+      email.length > 254 ||
+      subject.length > 80 ||
+      message.length < 20 ||
+      message.length > 5_000 ||
+      !allowedSubjects.has(subject)
+    ) {
+      return Response.json(
+        { success: false, error: "Le contenu du formulaire n’est pas valide." },
         { status: 400 }
       );
     }
@@ -47,6 +213,37 @@ export async function POST(request: Request) {
         {
           success: false,
           error: "L’adresse e-mail saisie n’est pas valide.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (looksPromotional(subject, message)) {
+      return Response.json({ success: true }, { status: 200 });
+    }
+
+    const ip = getClientIp(request);
+    const rateLimit = isRateLimited(ip);
+
+    if (rateLimit.limited) {
+      return Response.json(
+        {
+          success: false,
+          error:
+            "Trop de messages ont été envoyés. Veuillez réessayer plus tard.",
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(rateLimit.retryAfter) },
+        }
+      );
+    }
+
+    if (!(await verifyTurnstile(turnstileToken, ip))) {
+      return Response.json(
+        {
+          success: false,
+          error: "La vérification anti-robot a échoué.",
         },
         { status: 400 }
       );

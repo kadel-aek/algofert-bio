@@ -168,7 +168,7 @@ export const translations = {
       contactForm: {
         nameLabel: "Nom et prénom *",
         namePlaceholder: "Votre nom",
-        organizationLabel: "Organisme",
+        organizationLabel: "Organisme *",
         organizationPlaceholder: "Entreprise ou institution",
         emailLabel: "Adresse e-mail *",
         emailPlaceholder: "votre@email.com",
@@ -340,7 +340,7 @@ export const translations = {
       contactForm: {
         nameLabel: "Full name *",
         namePlaceholder: "Your name",
-        organizationLabel: "Organization",
+        organizationLabel: "Organization *",
         organizationPlaceholder: "Company or institution",
         emailLabel: "Email address *",
         emailPlaceholder: "your@email.com",
@@ -512,7 +512,7 @@ export const translations = {
       contactForm: {
         nameLabel: "الاسم واللقب *",
         namePlaceholder: "أدخل اسمك",
-        organizationLabel: "الهيئة أو المؤسسة",
+        organizationLabel: "الهيئة أو المؤسسة *",
         organizationPlaceholder: "شركة أو مؤسسة",
         emailLabel: "البريد الإلكتروني *",
         emailPlaceholder: "your@email.com",
