@@ -53,7 +53,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
     >
       <nav
         aria-label="Navigation principale"
-        className="mx-auto flex h-[72px] w-full max-w-[1500px] items-center justify-between gap-2 px-3 sm:h-[82px] sm:px-5 lg:min-h-[94px] lg:px-10"
+        className="mx-auto flex min-h-[72px] w-full max-w-[1500px] items-center justify-between gap-2 px-3 sm:min-h-[82px] sm:gap-3 sm:px-5 lg:min-h-[94px] lg:px-10"
       >
         <a
           href="#accueil"
@@ -61,15 +61,14 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           className="relative z-50 flex shrink-0 items-center"
           aria-label="Retour à l’accueil ALGOFERT-BIO"
         >
-          <div className="flex h-[62px] w-[190px] items-center justify-center overflow-hidden sm:h-[72px] sm:w-[235px] lg:h-[88px] lg:w-[330px]">
+          <div className="flex h-[64px] w-[128px] items-center justify-center overflow-hidden sm:h-[76px] sm:w-[185px] lg:h-[88px] lg:w-[330px]">
             <Image
               src={logoSrc}
               alt="Logo ALGOFERT-BIO"
               width={520}
               height={200}
               priority
-              sizes="(max-width: 639px) 190px, (max-width: 1023px) 235px, 330px"
-              className="h-[68px] w-[190px] scale-[1.5] object-contain object-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.42)] sm:h-[80px] sm:w-[235px] lg:h-[100px] lg:w-[330px] lg:scale-[1.6]"
+              className="h-[66px] w-[128px] scale-[1.28] object-contain object-center drop-shadow-[0_5px_16px_rgba(0,0,0,0.45)] sm:h-[82px] sm:w-[185px] sm:scale-[1.4] lg:h-[100px] lg:w-[330px] lg:scale-[1.6]"
             />
           </div>
         </a>
@@ -118,11 +117,29 @@ export default function Navbar({ logoSrc }: NavbarProps) {
           </div>
         </div>
 
-        <div className="relative z-50 flex shrink-0 items-center xl:hidden">
+        <div className="relative z-50 flex shrink-0 items-center gap-1.5 sm:gap-2 xl:hidden">
+          <div className="flex items-center rounded-full border border-white/15 bg-[#071d12]/70 p-0.5 backdrop-blur-md sm:p-1">
+            {languages.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setLanguage(item)}
+                className={`rounded-full px-2 py-1.5 text-[10px] font-extrabold transition sm:px-2.5 sm:py-2 sm:text-[11px] ${
+                  language === item
+                    ? "bg-[#e3bd42] text-[#17351f]"
+                    : "text-white/65"
+                }`}
+                aria-pressed={language === item}
+              >
+                {item.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
           <button
             type="button"
             onClick={() => setIsMenuOpen((current) => !current)}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-[#071d12]/85 text-white shadow-lg backdrop-blur-md transition hover:bg-[#0b2e1d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e3bd42] sm:h-12 sm:w-12"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-[#071d12]/70 text-white backdrop-blur-md sm:h-12 sm:w-12"
             aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMenuOpen}
           >
@@ -130,20 +147,20 @@ export default function Navbar({ logoSrc }: NavbarProps) {
               {isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             </span>
 
-            <span className="relative block h-5 w-6">
+            <span className="relative block h-4 w-5 sm:h-5 sm:w-6">
               <span
-                className={`absolute left-0 top-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
-                  isMenuOpen ? "translate-y-[9px] rotate-45" : ""
+                className={`absolute left-0 top-0 h-0.5 w-5 sm:w-6 rounded-full bg-current transition duration-300 ${
+                  isMenuOpen ? "translate-y-[7px] rotate-45 sm:translate-y-[9px]" : ""
                 }`}
               />
               <span
-                className={`absolute left-0 top-[9px] h-0.5 w-6 rounded-full bg-current transition duration-300 ${
+                className={`absolute left-0 top-[7px] sm:top-[9px] h-0.5 w-5 sm:w-6 rounded-full bg-current transition duration-300 ${
                   isMenuOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`absolute bottom-0 left-0 h-0.5 w-6 rounded-full bg-current transition duration-300 ${
-                  isMenuOpen ? "-translate-y-[9px] -rotate-45" : ""
+                className={`absolute bottom-0 left-0 h-0.5 w-5 sm:w-6 rounded-full bg-current transition duration-300 ${
+                  isMenuOpen ? "-translate-y-[7px] -rotate-45 sm:-translate-y-[9px]" : ""
                 }`}
               />
             </span>
@@ -152,7 +169,7 @@ export default function Navbar({ logoSrc }: NavbarProps) {
       </nav>
 
       <div
-        className={`absolute inset-x-0 top-0 z-40 h-dvh overflow-y-auto bg-[#06170e]/98 px-5 pb-10 pt-24 backdrop-blur-xl transition duration-300 sm:px-6 sm:pt-28 xl:hidden ${
+        className={`absolute inset-x-0 top-0 z-40 min-h-screen bg-[#06170e]/98 px-6 pb-10 pt-28 backdrop-blur-xl transition duration-300 xl:hidden ${
           isMenuOpen
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-5 opacity-0"
@@ -163,33 +180,6 @@ export default function Navbar({ logoSrc }: NavbarProps) {
             isRTL ? "text-right" : "text-left"
           }`}
         >
-          <div className="mb-5 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-2">
-            <span className="px-3 text-xs font-bold uppercase tracking-[0.2em] text-white/55">
-              Langue
-            </span>
-
-            <div
-              className="flex items-center rounded-full border border-white/15 bg-[#071d12]/70 p-1"
-              aria-label="Sélection de la langue"
-            >
-              {languages.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setLanguage(item)}
-                  className={`rounded-full px-3 py-2 text-xs font-extrabold transition ${
-                    language === item
-                      ? "bg-[#e3bd42] text-[#17351f]"
-                      : "text-white/65 hover:bg-white/10 hover:text-white"
-                  }`}
-                  aria-pressed={language === item}
-                >
-                  {item.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {navigation.map((item, index) => (
             <a
               key={item.href}
