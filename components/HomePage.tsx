@@ -16,7 +16,9 @@ const assets = {
 
   packaging: "/images/packaging/gamme-algofert-bio.png",
 
-  chercheuseDebout: "/images/terrain/chercheuse-debout.jpeg",
+  mesureTigesEquipe: "/images/terrain/mesure-tiges-equipe.webp",
+  mesureEpisEquipe: "/images/terrain/mesure-epis-equipe.webp",
+  mesurePlanteEquipe: "/images/terrain/mesure-plante-equipe.webp",
   chercheuseCulture: "/images/terrain/chercheuse-culture.jpg",
 
   rendementFr: "/images/essais/rendement-fr.jpg",
@@ -176,18 +178,40 @@ function HomeContent() {
       >
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-14 lg:grid-cols-2">
-            <div className="relative overflow-hidden rounded-3xl">
-              <Image
-                src={assets.chercheuseDebout}
-                alt="Suivi d’une parcelle expérimentale ALGOFERT-BIO"
-                width={900}
-                height={1200}
-                className="h-[620px] w-full object-cover"
-              />
+            <div className="overflow-hidden rounded-3xl bg-[#eef3eb] p-3 shadow-xl shadow-black/10 sm:p-4">
+              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+                <div className="overflow-hidden rounded-2xl sm:col-span-2">
+                  <Image
+                    src={assets.mesureTigesEquipe}
+                    alt="Mesure de la hauteur des tiges dans la parcelle expérimentale"
+                    width={1536}
+                    height={1024}
+                    className="aspect-[3/2] w-full object-cover transition duration-500 hover:scale-[1.02]"
+                  />
+                </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0b2e1d]/75 via-transparent to-transparent" />
+                <div className="overflow-hidden rounded-2xl">
+                  <Image
+                    src={assets.mesureEpisEquipe}
+                    alt="Mesure de la longueur des épis au champ"
+                    width={1511}
+                    height={1041}
+                    className="aspect-[3/2] w-full object-cover transition duration-500 hover:scale-[1.03]"
+                  />
+                </div>
 
-              <p className="absolute bottom-6 left-6 max-w-md text-sm font-medium leading-6 text-white">
+                <div className="overflow-hidden rounded-2xl">
+                  <Image
+                    src={assets.mesurePlanteEquipe}
+                    alt="Relevé collectif des mesures agronomiques au champ"
+                    width={1536}
+                    height={1024}
+                    className="aspect-[3/2] w-full object-cover transition duration-500 hover:scale-[1.03]"
+                  />
+                </div>
+              </div>
+
+              <p className="px-2 pb-1 pt-4 text-xs font-medium leading-5 text-[#536158]">
                 {t.page.field.caption}
               </p>
             </div>
