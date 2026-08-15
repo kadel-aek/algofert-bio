@@ -57,7 +57,7 @@ export const translations = {
       },
       field: {
         caption:
-          "Reconstitution visuelle des opérations de mesure réalisées au champ : hauteur des tiges, longueur des épis et relevé des données agronomiques.",
+          "opérations de mesure réalisées au champ : hauteur des tiges, longueur des épis et relevé des données agronomiques.",
         eyebrow: "Technologie évaluée au champ",
         title: "Des essais réalisés en conditions réelles",
         description:
@@ -244,7 +244,7 @@ export const translations = {
       },
       field: {
         caption:
-          "Visual reconstruction of field measurements: stem height, spike length and recording of agronomic data.",
+          "field measurement operations: stem height, spike length and recording of agronomic data.",
         eyebrow: "Technology evaluated in the field",
         title: "Trials conducted under real conditions",
         description: "The formulations were evaluated on rainfed barley to study their effects on vegetative development and yield components.",
@@ -417,7 +417,7 @@ export const translations = {
       },
       field: {
         caption:
-          "إعادة تمثيل بصري لعمليات القياس المنجزة في الحقل: ارتفاع السيقان وطول السنابل وتسجيل البيانات الزراعية.",
+          "عمليات القياس المنجزة في الحقل: ارتفاع السيقان وطول السنابل وتسجيل البيانات الزراعية.",
         eyebrow: "تكنولوجيا جرى تقييمها في الحقل",
         title: "تجارب أُنجزت في ظروف واقعية",
         description: "جرى تقييم التركيبات على الشعير في الزراعة المطرية لدراسة تأثيرها في النمو الخضري ومكونات المردود.",
