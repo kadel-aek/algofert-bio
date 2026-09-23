@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 
 import Navbar from "@/components/Navbar";
@@ -36,7 +37,7 @@ const assets = {
   fullFilm: "/videos/algofert-film.mp4",
 };
 
-function HomeContent() {
+function HomeContent({ faqSlot }: { faqSlot?: ReactNode }) {
   const { t, isRTL } = useLanguage();
   const benefits = t.page.benefits;
   const products = t.page.products;
@@ -681,6 +682,8 @@ function HomeContent() {
       </section>
 
       {/* Pied de page */}
+      {faqSlot}
+
       <footer className="bg-[#081f13] px-6 py-14 text-white lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
@@ -763,12 +766,14 @@ function HomeContent() {
 
 export default function HomePage({
   initialLanguage,
+  faqSlot,
 }: {
   initialLanguage: Language;
+  faqSlot?: ReactNode;
 }) {
   return (
     <LanguageProvider key={initialLanguage} initialLanguage={initialLanguage}>
-      <HomeContent />
+      <HomeContent faqSlot={faqSlot} />
     </LanguageProvider>
   );
 }

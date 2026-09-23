@@ -16,7 +16,7 @@ import {
   type StrategicPageKey,
 } from "@/lib/site";
 
-const pageKeys: StrategicPageKey[] = ["investors", "partners", "research", "news"];
+const pageKeys: StrategicPageKey[] = ["investors", "partners", "research", "news", "biofertilizers", "biocontrol"];
 
 function StrategicPageContentView({
   page,
@@ -115,7 +115,7 @@ function StrategicPageContentView({
       </section>
 
       <section className="bg-white px-6 py-16 lg:px-10">
-        <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {pageKeys.map((key) => (
             <Link key={key} href={strategicPath(key, language)} className={`rounded-2xl border p-5 font-bold transition ${key === pageKey ? "border-[#2e7d32] bg-[#2e7d32] text-white" : "border-[#17351f]/10 bg-[#f7f3e8] hover:border-[#2e7d32]/40"}`}>
               {strategicPages[key][language].label}

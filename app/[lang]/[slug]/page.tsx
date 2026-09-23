@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import JsonLd from "@/components/JsonLd";
+import { seoContent } from "@/lib/seo";
 import StrategicPage from "@/components/StrategicPage";
 import { strategicPages } from "@/lib/strategic-pages";
 import {
@@ -40,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: page.label,
     description: page.summary,
+    keywords: seoContent[lang].keywords,
     alternates: {
       canonical,
       languages: languageAlternates((language) => strategicPath(pageKey, language)),
