@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 
 import HomePage from "@/components/HomePage";
 import JsonLd from "@/components/JsonLd";
-import { translations } from "@/lib/i18n";
+import SeoFaq from "@/components/SeoFaq";
+import { seoContent } from "@/lib/seo";
 import {
   isLanguage,
   languageAlternates,
@@ -16,19 +17,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   if (!isLanguage(lang)) notFound();
 
-  const title = translations[lang].hero.description;
-  const description = translations[lang].mobileIntro;
+  const seo = seoContent[lang];
+  const title = seo.title;
+  const description = seo.description;
   const canonical = `${siteUrl}/${lang}`;
 
   return {
-    title: "ALGOFERT-BIO®",
+    title: { absolute: seo.title },
     description,
+    keywords: seo.keywords,
     alternates: {
       canonical,
       languages: languageAlternates((language) => `/${language}`),
     },
     openGraph: {
-      title: `ALGOFERT-BIO® — ${title}`,
+      title,
       description,
       url: canonical,
       locale: lang === "fr" ? "fr_FR" : lang === "en" ? "en_US" : "ar_DZ",
@@ -40,7 +43,8 @@ export default async function Page({ params }: Props) {
   const { lang } = await params;
   if (!isLanguage(lang)) notFound();
 
-  const description = translations[lang].mobileIntro;
+  const seo = seoContent[lang];
+  const description = seo.description;
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -52,6 +56,7 @@ export default async function Page({ params }: Props) {
         url: siteUrl,
         logo: `${siteUrl}/icon-512.png`,
         description,
+        knowsAbout: seo.keywords,
         address: {
           "@type": "PostalAddress",
           addressLocality: "Oran",
@@ -66,13 +71,23 @@ export default async function Page({ params }: Props) {
         inLanguage: ["fr", "en", "ar"],
         publisher: { "@id": `${siteUrl}/#organization` },
       },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl}/${lang}#faq`,
+        inLanguage: lang,
+        mainEntity: seo.faq.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      },
     ],
   };
 
   return (
     <>
       <JsonLd id="algofert-organization-schema" data={structuredData} />
-      <HomePage initialLanguage={lang} />
+      <HomePage initialLanguage={lang} faqSlot={<SeoFaq lang={lang} />} />
     </>
   );
 }

@@ -11,7 +11,9 @@ export type StrategicPageKey =
   | "investors"
   | "partners"
   | "research"
-  | "news";
+  | "news"
+  | "biofertilizers"
+  | "biocontrol";
 
 export const strategicSlugs: Record<
   StrategicPageKey,
@@ -21,6 +23,16 @@ export const strategicSlugs: Record<
   partners: { fr: "partenaires", en: "partners", ar: "partners" },
   research: { fr: "recherche", en: "research", ar: "research" },
   news: { fr: "actualites", en: "news", ar: "news" },
+  biofertilizers: {
+    fr: "bio-engrais-algerie",
+    en: "biofertilizers-algeria",
+    ar: "biofertilizers-algeria",
+  },
+  biocontrol: {
+    fr: "biopesticides-biocontrole",
+    en: "biocontrol-biopesticides",
+    ar: "biocontrol-biopesticides",
+  },
 };
 
 export function strategicPath(key: StrategicPageKey, language: Language) {
