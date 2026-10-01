@@ -16,7 +16,7 @@ import {
   type StrategicPageKey,
 } from "@/lib/site";
 
-const pageKeys: StrategicPageKey[] = ["investors", "partners", "research", "news", "biofertilizers", "biocontrol"];
+const pageKeys: StrategicPageKey[] = ["investors", "partners", "research", "news", "biofertilizers", "biocontrol", "naturalFertilizer"];
 
 function StrategicPageContentView({
   page,

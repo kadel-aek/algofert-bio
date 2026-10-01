@@ -33,7 +33,7 @@ export default function SeoFaq({ lang }: { lang: Language }) {
           ))}
         </div>
         <nav className="mt-8 flex flex-wrap gap-3">
-          {(["biofertilizers", "biocontrol"] as const).map((key) => (
+          {(["biofertilizers", "naturalFertilizer", "biocontrol"] as const).map((key) => (
             <Link
               key={key}
               href={strategicPath(key, lang)}

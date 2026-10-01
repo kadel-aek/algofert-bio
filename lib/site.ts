@@ -13,7 +13,8 @@ export type StrategicPageKey =
   | "research"
   | "news"
   | "biofertilizers"
-  | "biocontrol";
+  | "biocontrol"
+  | "naturalFertilizer";
 
 export const strategicSlugs: Record<
   StrategicPageKey,
@@ -32,6 +33,11 @@ export const strategicSlugs: Record<
     fr: "biopesticides-biocontrole",
     en: "biocontrol-biopesticides",
     ar: "biocontrol-biopesticides",
+  },
+  naturalFertilizer: {
+    fr: "engrais-naturel-biostimulant",
+    en: "natural-fertilizer-biostimulant",
+    ar: "natural-fertilizer-biostimulant",
   },
 };
 
