@@ -309,7 +309,7 @@ export const strategicPages: Record<
       highlights: [
         { title: "Biopesticide ou biofertilisant ?", text: "Un biopesticide est un produit d'origine biologique destiné à lutter contre des ravageurs ou maladies. ALGOFERT-BIO® n'est pas présenté comme un biopesticide homologué : c'est un biofertilisant dont l'activité de biocontrôle est étudiée." },
         { title: "Le biocontrôle", text: "Le biocontrôle regroupe les méthodes de protection des plantes fondées sur des mécanismes naturels, comme la compétition avec les agents pathogènes dans la rhizosphère." },
-        { title: "Recherche en cours", text: "Les travaux de l'équipe du laboratoire LP2VM (USTO-MB) se poursuivent pour documenter ces effets et préparer la validation réglementaire." },
+        { title: "Recherche en cours", text: "Les travaux de l'équipe de recherche de l'USTO-MB se poursuivent pour documenter ces effets et préparer la validation réglementaire." },
       ],
       needsTitle: "Ce que le biocontrôle peut apporter",
       needs: ["Moins de recours aux pesticides chimiques", "Une meilleure santé du sol et de la rhizosphère", "Une protection complémentaire des cultures", "Une agriculture plus durable"],
@@ -327,7 +327,7 @@ export const strategicPages: Record<
       highlights: [
         { title: "Biopesticide or biofertilizer?", text: "A biopesticide is a biologically derived product used against pests or diseases. ALGOFERT-BIO® is not presented as a registered biopesticide: it is a biofertilizer whose biocontrol activity is under study." },
         { title: "What is biocontrol?", text: "Biocontrol covers plant protection methods based on natural mechanisms, such as competition with pathogens in the rhizosphere." },
-        { title: "Ongoing research", text: "The LP2VM laboratory team (USTO-MB) continues its work to document these effects and prepare regulatory validation." },
+        { title: "Ongoing research", text: "The USTO-MB research team continues its work to document these effects and prepare regulatory validation." },
       ],
       needsTitle: "What biocontrol can bring",
       needs: ["Less reliance on chemical pesticides", "Better soil and rhizosphere health", "Complementary crop protection", "More sustainable agriculture"],
@@ -345,7 +345,7 @@ export const strategicPages: Record<
       highlights: [
         { title: "مبيد حيوي أم سماد بيولوجي؟", text: "المبيد الحيوي منتج ذو أصل بيولوجي يُستعمل ضد الآفات أو الأمراض. لا يُقدَّم ALGOFERT-BIO® كمبيد حيوي معتمد، بل كسماد بيولوجي يجري دراسة نشاطه في المكافحة البيولوجية." },
         { title: "ما هي المكافحة البيولوجية؟", text: "المكافحة البيولوجية طرق لحماية النبات تعتمد على آليات طبيعية، مثل التنافس مع مسببات الأمراض في منطقة الجذور." },
-        { title: "بحث متواصل", text: "يواصل فريق مخبر LP2VM (جامعة USTO-MB) أعماله لتوثيق هذه التأثيرات والتحضير للتحقق التنظيمي." },
+        { title: "بحث متواصل", text: "يواصل فريق البحث بجامعة USTO-MB أعماله لتوثيق هذه التأثيرات والتحضير للتحقق التنظيمي." },
       ],
       needsTitle: "ما الذي يمكن أن تقدمه المكافحة البيولوجية",
       needs: ["تقليل الاعتماد على المبيدات الكيميائية", "تحسين صحة التربة ومنطقة الجذور", "حماية تكميلية للمحاصيل", "زراعة أكثر استدامة"],

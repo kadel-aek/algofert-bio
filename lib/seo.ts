@@ -16,7 +16,7 @@ export const seoContent: Record<Language, SeoContent> = {
   fr: {
     title: "ALGOFERT-BIO® — Bio-engrais et biofertilisants PGPR algériens",
     description:
-      "ALGOFERT-BIO® : bio-engrais (bioangrais) et biofertilisants microbiens PGPR issus de bactéries autochtones algériennes. Alternative naturelle aux engrais chimiques, avec activité de biocontrôle. Essais réels sur orge, Oran, Algérie.",
+      "ALGOFERT-BIO® : bio-engrais (bioangrais) et biofertilisants microbiens PGPR issus de bactéries autochtones algériennes. Alternative naturelle aux engrais chimiques, avec activité de biocontrôle. Essais au champ sur orge à El-Guettar (Relizane), Algérie.",
     keywords: [
       "bioangrais",
       "bio-angrais",
@@ -58,7 +58,7 @@ export const seoContent: Record<Language, SeoContent> = {
   en: {
     title: "ALGOFERT-BIO® — Bio-fertilizers and PGPR biofertilizers from Algeria",
     description:
-      "ALGOFERT-BIO®: microbial PGPR bio-fertilizers (biofertilisers) made from native Algerian bacterial consortia. A natural alternative to chemical fertilizers, with biocontrol activity. Field trials on barley, Oran, Algeria.",
+      "ALGOFERT-BIO®: microbial PGPR bio-fertilizers (biofertilisers) made from native Algerian bacterial consortia. A natural alternative to chemical fertilizers, with biocontrol activity. Field trials on barley in El-Guettar (Relizane), Algeria.",
     keywords: [
       "biofertilizer",
       "biofertiliser",
@@ -87,12 +87,16 @@ export const seoContent: Record<Language, SeoContent> = {
         q: "How is a biofertilizer different from a chemical fertilizer?",
         a: "A chemical fertilizer supplies mineral nutrients directly. A biofertilizer establishes living bacteria in the rhizosphere to improve nutrient availability, root development and soil health, supporting sustainable agriculture.",
       },
+      {
+        q: "Where can I find biofertilizers in Algeria?",
+        a: "ALGOFERT-BIO® is developed at the University of Science and Technology of Oran (USTO-MB). For partnership, trial or information requests, please use the contact form on this website.",
+      },
     ],
   },
   ar: {
     title: "ALGOFERT-BIO® — أسمدة بيولوجية وأسمدة حيوية جزائرية",
     description:
-      "ALGOFERT-BIO®: أسمدة بيولوجية (أسمدة حيوية) ميكروبية من نوع PGPR مستخلصة من بكتيريا جزائرية محلية. بديل طبيعي للأسمدة الكيميائية مع نشاط للمكافحة البيولوجية. تجارب حقلية على الشعير، وهران، الجزائر.",
+      "ALGOFERT-BIO®: أسمدة بيولوجية (أسمدة حيوية) ميكروبية من نوع PGPR مستخلصة من بكتيريا جزائرية محلية. بديل طبيعي للأسمدة الكيميائية مع نشاط للمكافحة البيولوجية. تجارب حقلية على الشعير بالقطار (غليزان)، الجزائر.",
     keywords: [
       "أسمدة بيولوجية",
       "اسمدة بيولوجية",
@@ -120,6 +124,10 @@ export const seoContent: Record<Language, SeoContent> = {
       {
         q: "ما الفرق بين السماد البيولوجي والسماد الكيميائي؟",
         a: "يوفّر السماد الكيميائي العناصر المعدنية مباشرة، أما السماد البيولوجي فيُدخل بكتيريا حية في منطقة الجذور لتحسين توفر العناصر الغذائية ونمو الجذور وصحة التربة، في إطار زراعة مستدامة.",
+      },
+      {
+        q: "أين أجد الأسمدة البيولوجية في الجزائر؟",
+        a: "تم تطوير ALGOFERT-BIO® بجامعة العلوم والتكنولوجيا بوهران (USTO-MB). لأي طلب شراكة أو تجربة أو معلومات، يرجى استعمال استمارة الاتصال في الموقع.",
       },
     ],
   },
